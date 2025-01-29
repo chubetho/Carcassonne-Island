@@ -8,7 +8,9 @@ useHead({
 
 <template>
   <VitePwaManifest />
-  <NuxtPage />
+  <UApp>
+    <NuxtPage />
+  </UApp>
 </template>
 
 <style>
@@ -18,10 +20,5 @@ body,
   height: 100vh;
   margin: 0;
   padding: 0;
-}
-
-html.dark {
-  background: #222;
-  color: white;
 }
 </style>

@@ -4,11 +4,11 @@ import { appDescription } from './app/constants/index'
 export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
-    '@unocss/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
     '@nuxt/eslint',
+    '@nuxt/ui',
   ],
 
   devtools: {
@@ -33,9 +33,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: [
-    '@unocss/reset/tailwind.css',
-  ],
+  css: ['~/assets/css/main.css'],
 
   colorMode: {
     classSuffix: '',
