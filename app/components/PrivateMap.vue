@@ -7,7 +7,7 @@ const emit = defineEmits<{
   updateCoord: [v: [number, number]]
 }>()
 
-const edge = 24
+const edge = 15
 const coord = ref<[number, number]>([0, 0])
 
 const hints = computed<[number, number][]>(() => {

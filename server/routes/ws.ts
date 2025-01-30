@@ -23,7 +23,6 @@ export default defineWebSocketHandler({
       }
 
       case 'MOVE':{
-        console.log(msg)
         peer.publish(ROOM_ID, msg)
         break
       }
