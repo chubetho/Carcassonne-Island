@@ -1,6 +1,6 @@
 export class Board {
   private static board: Board
-  public players: Record<string, string> = {
+  public players: Record<'p1' | 'p2' | 'p3' | 'p4' | 'lj', string> = {
     p1: '',
     p2: '',
     p3: '',

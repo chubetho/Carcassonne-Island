@@ -1,11 +1,25 @@
 <script setup lang="ts">
 const { data: player } = await useFetch('/api/player')
 
-const { open, status } = useSocket()
+const { open, status, send, onData } = useSocket()
 const coord = shallowRef<[number, number]>([0, 0])
-const range = ref<number>()
+const range = ref<number>(0)
 
 onMounted(open)
+
+watch(coord, (v) => {
+  send({
+    type: 'MOVE',
+    content: {
+      character: player.value!.character,
+      coord: v,
+    },
+  })
+}, { deep: true })
+
+onData((d) => {
+  console.log(d)
+})
 </script>
 
 <template>

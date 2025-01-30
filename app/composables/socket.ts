@@ -1,7 +1,7 @@
 import type { SendPayload } from '#shared/types'
 
 export function useSocket() {
-  const { open, data: _data, send: _send, status } = useWebSocket('/ws', {
+  const { open, data, send: _send, status } = useWebSocket('/ws', {
     immediate: false,
   })
 
@@ -10,14 +10,22 @@ export function useSocket() {
     _send(data)
   }
 
-  const data = computedAsync(async () => {
-    if (typeof _data === 'string')
-      return _data as string
+  const event = createEventHook<string>()
 
-    if (_data instanceof Blob) {
-      return await (_data as Blob).text()
+  watch(data, async (d) => {
+    if (typeof d === 'string') {
+      event.trigger(d)
+      return
     }
+
+    if (d instanceof Blob) {
+      const text = await (d as Blob).text()
+      event.trigger(text)
+      return
+    }
+
+    console.error(d)
   })
 
-  return { open, send, data, status }
+  return { open, send, onData: event.on, status }
 }

@@ -1,4 +1,5 @@
 import type { H3Event } from 'h3'
+import type { Character } from '~~/shared/types'
 import { sessionConfig } from '../constants'
 import { Board } from '../game/board'
 
@@ -10,7 +11,7 @@ export async function getPlayer(event: H3Event) {
     return
 
   return {
-    character: player[0],
+    character: player[0] as Character,
     id: player[1],
   }
 }

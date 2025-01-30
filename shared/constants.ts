@@ -32,4 +32,4 @@ export const characters = [
     value: 'lj',
     disabled: false,
   },
-]
+] as const

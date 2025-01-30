@@ -1,32 +1,33 @@
 import type { SendPayload } from '#shared/types'
-import type { Message, Peer } from 'crossws'
+import type { Peer } from 'crossws'
 import { destr } from 'destr'
 import { sessionConfig } from '../constants'
 import { Board } from '../game/board'
 
 const ROOM_ID = 'room'
-
 const board = Board.get()
 
 export default defineWebSocketHandler({
   async open(peer) {
-    const id = await getId(peer)
-    const player = Object.entries(board.players).find(([_, v]) => v === id)
-    if (player) {
-      peer.send(`You have selected ${player[0]}`)
-    }
-
     peer.subscribe(ROOM_ID)
   },
 
   async message(peer, message) {
     const id = await getId(peer)
-
     const msg = destr<SendPayload>(message.text())
-    board.players[msg.content] = id
-    peer.publish(ROOM_ID, msg)
+    switch (msg.type) {
+      case 'CHOOSE_CHARACTER':{
+        board.players[msg.content] = id
+        console.log(board.players)
+        break
+      }
 
-    console.log(board.players)
+      case 'MOVE':{
+        console.log(msg)
+        peer.publish(ROOM_ID, msg)
+        break
+      }
+    }
   },
 
   async close(peer) {

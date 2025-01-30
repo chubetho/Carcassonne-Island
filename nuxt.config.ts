@@ -1,5 +1,5 @@
 import { pwa } from './app/config/pwa'
-import { appDescription } from './app/constants/index'
+import { appDescription } from './shared/constants'
 
 export default defineNuxtConfig({
   modules: [
