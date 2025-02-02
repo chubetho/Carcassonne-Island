@@ -5,12 +5,14 @@ import { characters as all } from '~~/shared/constants'
 const { open, send } = useSocket()
 const state = ref<'idle' | 'joining' | 'joined'>('idle')
 
-const { data: player } = await useFetch('/api/player')
-// If player has joined before
-if (player.value) {
-  state.value = 'joined'
-  navigateTo('/private')
-}
+onMounted(async () => {
+  const player = await $fetch('/api/player')
+  // If player has joined before
+  if (player) {
+    state.value = 'joined'
+    navigateTo('/private')
+  }
+})
 
 const characters = ref(all)
 

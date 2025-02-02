@@ -3,6 +3,7 @@ import type { Character } from '~~/shared/types'
 import { sessionConfig } from '../constants'
 import { Board } from '../game/board'
 
+// Get joined player from session
 export async function getPlayer(event: H3Event) {
   const board = Board.get()
   const session = await useSession(event, sessionConfig)
