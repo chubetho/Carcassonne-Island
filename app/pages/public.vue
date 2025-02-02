@@ -1,23 +1,7 @@
 <script setup lang="ts">
-import type { BoardState } from '~/types/BoardState'
 import PublicHints from '~/components/PublicHints.vue'
 
-const store = useBoardStore()
-const { open, onData, status } = useSocket({ beamer: true })
-onData(({ type, payload }) => {
-  if (type !== 'UpdateBoard')
-    return
-
-  const bs = payload as BoardState
-  store.players = bs.player_positions
-  store.hints = bs.hints
-  store.current_day = bs.current_day
-  store.treasure_coord = bs.burried_items[0][0]
-})
-
-onMounted(() => {
-  open()
-})
+const { status } = useSocket()
 </script>
 
 <template>

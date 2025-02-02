@@ -1,7 +1,14 @@
+import type { Character } from './types'
+
 export const appName = 'Treasure Island'
 export const appDescription = appName
 
-export const characters = [
+export const characters: {
+  label: string
+  description: string
+  value: Character
+  disabled: boolean
+}[] = [
   {
     label: 'Pirate1',
     description: 'This is the description for Pirate1.',
@@ -32,4 +39,4 @@ export const characters = [
     value: 'lj',
     disabled: false,
   },
-] as const
+]

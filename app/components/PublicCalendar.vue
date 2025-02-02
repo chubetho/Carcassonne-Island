@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const store = useBoardStore()
-
 const dates = [
   { date: 1, weekday: 'Friday' },
   { date: 2, weekday: 'Saturday' },
@@ -46,12 +44,12 @@ const dates = [
 
         <div
           class="flex grow items-center justify-center text-2xl"
-          :class="store.current_day === d.date ? 'text-[var(--ui-error)]' : 'text-black'"
+          :class="true ? 'text-[var(--ui-error)]' : 'text-black'"
         >
           {{ d.date }}
         </div>
 
-        <div v-if="store.players[d.date]" class="absolute left-1/2 top-1/2 size-12 overflow-hidden border border-black rounded-full -translate-x-1/2 -translate-y-1/2">
+        <div v-if="true" class="absolute left-1/2 top-1/2 size-12 overflow-hidden border border-black rounded-full -translate-x-1/2 -translate-y-1/2">
           <img :src="`/players/player_sm_${1}.png`">
         </div>
       </div>

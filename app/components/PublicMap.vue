@@ -1,9 +1,5 @@
 <script setup lang="ts">
-const edge = 24
-
-const store = useBoardStore()
-
-const players = computed(() => Object.values(store.players).filter(x => !!x))
+const edge = 15
 </script>
 
 <template>
@@ -19,7 +15,7 @@ const players = computed(() => Object.values(store.players).filter(x => !!x))
     >
       <template v-for="y in edge" :key="`y:${y}`">
         <template v-for="x in edge" :key="`x:${x}`">
-          <li
+          <!-- <li
             v-if="store.treasure_coord"
             class="cursor-pointer border-[0.5px] border-black/50"
             :class="{
@@ -30,9 +26,9 @@ const players = computed(() => Object.values(store.players).filter(x => !!x))
           <li
             v-else-if="players.find(p => p[0] === x && p[1] === y)"
             class="cursor-pointer border-[0.5px] border-black/50 bg-[var(--ui-info)]"
-          />
+          /> -->
 
-          <li v-else class="cursor-pointer border-[0.5px] border-black/50" />
+          <li class="cursor-pointer border-[0.5px] border-black/50" />
         </template>
       </template>
     </ul>

@@ -1,6 +1,4 @@
-import type { characters } from './constants'
-
-export type Character = (typeof characters)[number]['value']
+export type Character = 'p1' | 'p2' | 'p3' | 'p4' | 'lj'
 
 export type SendPayload = {
   type: 'CHOOSE_CHARACTER'

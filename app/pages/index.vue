@@ -1,46 +1,30 @@
 <script setup lang="ts">
-import { characters as all } from '../../shared/constants'
-
-const state = ref<'idle' | 'joining' | 'joined'>('idle')
+import type { Character } from '~~/shared/types'
+import { characters as all } from '~~/shared/constants'
 
 const { open, send } = useSocket()
+const state = ref<'idle' | 'joining' | 'joined'>('idle')
 
+const { data: player } = await useFetch('/api/player')
 // If player has joined before
-const {
-  data: player,
-  execute: executePlayer,
-} = await useFetch('/api/player', { immediate: false })
-watch(player, (v) => {
-  if (!v)
-    return
-
+if (player.value) {
   state.value = 'joined'
-  if (player.value?.id)
-    navigateTo(`/private/${player.value.id}`)
-}, { once: true })
-onMounted(async () => {
-  await executePlayer()
-})
+  navigateTo('/private')
+}
 
-const {
-  data: _characters,
-  execute: executeCharacters,
-} = await useFetch('/api/characters', { immediate: false })
+const characters = ref(all)
 
-const characters = computed(() => {
-  if (_characters.value)
-    return all.filter(c => _characters.value?.includes(c.value))
-
-  return all
-})
-
-const character = ref<typeof characters.value[number]['value'] | ''>('')
+const character = ref<Character | ''>('')
 const error = ref('')
 
 async function join() {
   state.value = 'joining'
   open()
-  await executeCharacters()
+
+  const data = await $fetch('/api/characters')
+  if (data) {
+    characters.value = all.filter(c => data.includes(c.value))
+  }
 }
 
 async function confirm() {
@@ -55,9 +39,7 @@ async function confirm() {
     content: character.value,
   })
   state.value = 'joined'
-  await executePlayer()
-  if (player.value?.id)
-    navigateTo(`/private/${player.value.id}`)
+  navigateTo(`/private`)
 }
 </script>
 
@@ -70,21 +52,37 @@ async function confirm() {
     >
       <template #header>
         <template v-if="state === 'idle'">
-          Please join
+          Click button below to join.
         </template>
 
         <template v-if="state === 'joining'">
-          Select character
+          Select a character.
         </template>
       </template>
 
-      <div>
+      <div v-if="state === 'idle'">
+        <ul class="grid gap-3">
+          <li
+            v-for="i in 5"
+            :key="i"
+            class="flex gap-2"
+          >
+            <USkeleton class="size-5 shrink-0 rounded-full" />
+            <div class="grid gap-1 w-full">
+              <USkeleton class="h-4 w-30" />
+              <USkeleton class="h-4 w-full" />
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="state === 'joining'">
         <URadioGroup
           v-model="character"
           :items="characters as any"
-          :disabled="state === 'idle'"
         />
-        <p v-if="error" class="text-[var(--ui-error)] text-sm mt-4">
+
+        <p class="text-[var(--ui-error)] text-sm mt-4">
           {{ error }}
         </p>
       </div>

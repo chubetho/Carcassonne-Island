@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const store = useBoardStore()
 </script>
 
 <template>
@@ -11,7 +10,7 @@ const store = useBoardStore()
     >
       <div
         class="overflow-hidden border-2 rounded"
-        :class="store.players[i] ? 'opacity-100 border-[var(--ui-primary)]' : 'opacity-50 border-black'"
+        :class="true ? 'opacity-100 border-[var(--ui-primary)]' : 'opacity-50 border-black'"
       >
         <img :src="`/players/player_${i}.png`">
       </div>

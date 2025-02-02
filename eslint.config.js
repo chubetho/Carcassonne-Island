@@ -7,7 +7,7 @@ export default nuxt(
     {
       formatters: true,
       rules: {
-        'no-console': 'warn',
+        'no-console': 'off',
       },
     },
   ),

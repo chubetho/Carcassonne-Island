@@ -1,4 +1,3 @@
-import { pwa } from './app/config/pwa'
 import { appDescription } from './shared/constants'
 
 export default defineNuxtConfig({
@@ -6,7 +5,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
-    '@vite-pwa/nuxt',
     '@nuxt/eslint',
     '@nuxt/ui',
   ],
@@ -26,9 +24,6 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: appDescription },
-        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-        { name: 'theme-color', media: '(prefers-color-scheme: light)', content: 'white' },
-        { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#222222' },
       ],
     },
   },
@@ -78,5 +73,4 @@ export default defineNuxtConfig({
     },
   },
 
-  pwa,
 })
