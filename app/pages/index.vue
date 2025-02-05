@@ -3,13 +3,16 @@ import type { Character } from '~~/shared/types'
 import { characters as all } from '~~/shared/constants'
 
 const { open, send } = useSocket()
+const uuid = useSessionStorage('auth', '')
 const state = ref<'idle' | 'joining' | 'joined'>('idle')
 
 onMounted(async () => {
-  const player = await $fetch('/api/player')
-  // If player has joined before
-  if (player) {
-    state.value = 'joined'
+  const authenticated = await $fetch('/api/auth', {
+    method: 'POST',
+    body: { uuid: uuid.value },
+  })
+
+  if (authenticated) {
     navigateTo('/private')
   }
 })
@@ -20,7 +23,8 @@ const character = ref<Character | ''>('')
 const error = ref('')
 
 async function join() {
-  await $fetch('/api/auth')
+  const _uuid = await $fetch('/api/auth')
+  uuid.value = _uuid
 
   state.value = 'joining'
   open()
@@ -39,6 +43,7 @@ async function confirm() {
 
   error.value = ''
   send({
+    uuid: uuid.value,
     type: 'CHOOSE_CHARACTER',
     content: character.value,
   })

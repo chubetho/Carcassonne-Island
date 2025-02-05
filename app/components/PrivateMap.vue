@@ -88,11 +88,14 @@ function setCoord(_coord: [number, number]) {
 watch(coord, (v) => {
   emit('updateCoord', v)
 }, { deep: true })
+
+const { data } = await useFetch<string>('/api/map')
+const url = computed(() => data.value ?? '/map.png')
 </script>
 
 <template>
   <div class="relative h-full w-fit">
-    <img src="/map.png" alt="map" class="h-full object-contain">
+    <img :src="url" alt="map" class="h-full object-contain">
 
     <ul
       class="group absolute inset-0 z-1 grid size-full"

@@ -1,12 +1,9 @@
 import type { SendPayload } from '#shared/types'
-import type { Peer } from 'crossws'
 import { destr } from 'destr'
-import { sessionConfig } from '../constants'
 import { Board } from '../game/board'
 
 const ROOM_ID = 'room'
 const board = Board.get()
-let count = 0
 
 // Create route to connect to this websocket
 export default defineWebSocketHandler({
@@ -14,19 +11,11 @@ export default defineWebSocketHandler({
     peer.subscribe(ROOM_ID)
   },
 
-  async upgrade(request) {
-    const session = await useSession(request, sessionConfig)
-    console.log({ id: session.id, data: session.data })
-  },
-
   async message(peer, message) {
-    const id = await getId(peer)
     const msg = destr<SendPayload>(message.text())
     switch (msg.type) {
       case 'CHOOSE_CHARACTER':{
-        const _id = id ?? count.toString()
-        count++
-        board.characters[msg.content] = _id
+        board.characters[msg.content] = msg.uuid
         console.log(board.characters)
         break
       }
@@ -39,17 +28,6 @@ export default defineWebSocketHandler({
   },
 
   async close(peer) {
-    const id = await getId(peer)
-    peer.publish(ROOM_ID, `${id} left!`)
+    peer.publish(ROOM_ID, `left!`)
   },
 })
-
-async function getId(peer: Peer) {
-  try {
-    const session = await useSession(peer, sessionConfig)
-    return session.id as string
-  }
-  catch {
-    return undefined
-  }
-}

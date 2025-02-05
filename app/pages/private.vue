@@ -1,21 +1,22 @@
 <script setup lang="ts">
-const { data: player } = await useFetch('/api/player')
-
-const { open, status, send, onData } = useSocket()
+const { open, onData } = useSocket()
 const coord = shallowRef<[number, number]>([0, 0])
 const range = ref<number>(0)
+const uuid = useSessionStorage('auth', '')
 
-onMounted(open)
-
-watch(coord, (v) => {
-  send({
-    type: 'MOVE',
-    content: {
-      character: player.value!.character,
-      coord: v,
-    },
+onMounted(async () => {
+  const authenticated = await $fetch('/api/auth', {
+    method: 'POST',
+    body: { uuid: uuid.value },
   })
-}, { deep: true })
+
+  if (!authenticated) {
+    navigateTo('/')
+    return
+  }
+
+  open()
+})
 
 onData((d) => {
   console.log(d)
@@ -32,16 +33,6 @@ onData((d) => {
       @update-coord="v => coord = v"
     />
 
-    <div class="grow border border-black p-2 text-black">
-      <pre>
-        {{ player }}
-      </pre>
-
-      <div class="mt-4" />
-
-      <div class="mt-4 italic">
-        <p>WS status: {{ status }}</p>
-      </div>
-    </div>
+    <div class="grow border border-black p-2 text-black" />
   </div>
 </template>
