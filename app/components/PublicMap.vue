@@ -1,10 +1,13 @@
 <script setup lang="ts">
+const props = defineProps<{
+  url: string
+}>()
 const edge = 15
 </script>
 
 <template>
   <div class="relative size-full">
-    <img src="/map.png" alt="map" class="aspect-square size-full">
+    <img :src="props.url" alt="map" class="aspect-square size-full">
 
     <ul
       class="group absolute inset-0 z-1 grid size-full"

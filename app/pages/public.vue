@@ -2,6 +2,9 @@
 import PublicHints from '~/components/PublicHints.vue'
 
 const { status } = useSocket()
+
+const { data } = await useFetch<string>('/api/map')
+const url = computed(() => data.value ?? '/map.png')
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const { status } = useSocket()
       </div>
 
       <div class="col-span-10 row-span-10 overflow-hidden border border-black rounded">
-        <PublicMap />
+        <PublicMap :url="url" />
       </div>
 
       <div class="col-span-4 row-span-10">

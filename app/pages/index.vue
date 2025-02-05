@@ -20,6 +20,8 @@ const character = ref<Character | ''>('')
 const error = ref('')
 
 async function join() {
+  await $fetch('/api/auth')
+
   state.value = 'joining'
   open()
 
@@ -63,7 +65,7 @@ async function confirm() {
       </template>
 
       <div v-if="state === 'idle'">
-        <ul class="grid gap-3">
+        <ul class="grid grid-cols-2 gap-y-3 gap-x-10">
           <li
             v-for="i in 5"
             :key="i"
@@ -71,8 +73,8 @@ async function confirm() {
           >
             <USkeleton class="size-5 shrink-0 rounded-full" />
             <div class="grid gap-1 w-full">
-              <USkeleton class="h-4 w-30" />
-              <USkeleton class="h-4 w-full" />
+              <USkeleton class="h-3 w-30" />
+              <USkeleton class="h-3 w-full" />
             </div>
           </li>
         </ul>
@@ -82,6 +84,9 @@ async function confirm() {
         <URadioGroup
           v-model="character"
           :items="characters as any"
+          :ui="{
+            fieldset: 'grid grid-cols-2 gap-3',
+          }"
         />
 
         <p class="text-[var(--ui-error)] text-sm mt-4">

@@ -6,6 +6,7 @@ import { Board } from '../game/board'
 
 const ROOM_ID = 'room'
 const board = Board.get()
+let count = 0
 
 // Create route to connect to this websocket
 export default defineWebSocketHandler({
@@ -13,13 +14,20 @@ export default defineWebSocketHandler({
     peer.subscribe(ROOM_ID)
   },
 
+  async upgrade(request) {
+    const session = await useSession(request, sessionConfig)
+    console.log({ id: session.id, data: session.data })
+  },
+
   async message(peer, message) {
     const id = await getId(peer)
     const msg = destr<SendPayload>(message.text())
     switch (msg.type) {
       case 'CHOOSE_CHARACTER':{
-        board.players[msg.content] = id
-        console.log(board.players)
+        const _id = id ?? count.toString()
+        count++
+        board.characters[msg.content] = _id
+        console.log(board.characters)
         break
       }
 
@@ -37,6 +45,11 @@ export default defineWebSocketHandler({
 })
 
 async function getId(peer: Peer) {
-  const session = await useSession(peer, sessionConfig)
-  return session.id
+  try {
+    const session = await useSession(peer, sessionConfig)
+    return session.id as string
+  }
+  catch {
+    return undefined
+  }
 }

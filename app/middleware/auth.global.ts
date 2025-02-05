@@ -1,5 +1,7 @@
+const whitelist = ['/', '/public', '/playground']
+
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (to.path === '/' || to.path === '/public')
+  if (whitelist.includes(to.path))
     return
 
   const player = await $fetch('/api/player')
