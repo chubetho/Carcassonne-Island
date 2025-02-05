@@ -9,7 +9,7 @@ const url = computed(() => data.value ?? '/map.png')
 
 <template>
   <div
-    class="aspect-4/3 max-h-screen overflow-hidden bg-[url(/bg.png)] bg-cover bg-center bg-no-repeat p-2 relative"
+    class="bg-[url(/bg.png)] bg-cover bg-center bg-no-repeat p-2 relative"
   >
     <div class="absolute top-0 right-0 italic text-red-500 bg-white p-2">
       <p>WS status: {{ status }}</p>

@@ -5,6 +5,7 @@ import { characters as all } from '~~/shared/constants'
 const { open, send } = useSocket()
 const uuid = useSessionStorage('auth', '')
 const state = ref<'idle' | 'joining' | 'joined'>('idle')
+const dialogOpen = ref(false)
 
 onMounted(async () => {
   const authenticated = await $fetch('/api/auth', {
@@ -60,13 +61,30 @@ async function confirm() {
       :ui="{ footer: 'flex justify-end' }"
     >
       <template #header>
-        <template v-if="state === 'idle'">
-          Click button below to join.
-        </template>
+        <div class="flex justify-between items-center">
+          <span>
+            <template v-if="state === 'idle'">
+              Click button below to join.
+            </template>
 
-        <template v-if="state === 'joining'">
-          Select a character.
-        </template>
+            <template v-if="state === 'joining'">
+              Select a character.
+            </template>
+          </span>
+
+          <UModal v-model:open="dialogOpen" fullscreen title="Custom map">
+            <UButton
+              icon="i-lucide-settings"
+              color="neutral"
+              variant="subtle"
+              size="sm"
+            />
+
+            <template #body>
+              <MapUploader @set="dialogOpen = false" />
+            </template>
+          </UModal>
+        </div>
       </template>
 
       <div v-if="state === 'idle'">
