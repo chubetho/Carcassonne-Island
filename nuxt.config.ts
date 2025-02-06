@@ -1,3 +1,4 @@
+import { pwa } from './configs/pwa'
 import { appDescription } from './shared/constants'
 
 export default defineNuxtConfig({
@@ -6,6 +7,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/eslint',
     '@nuxt/ui',
+    '@vite-pwa/nuxt',
   ],
 
   devtools: {
@@ -14,15 +16,17 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      viewport: 'width=device-width,initial-scale=1',
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       link: [
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
         { rel: 'icon', type: 'image/svg+xml', href: '/nuxt.svg' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'description', content: appDescription },
+        { name: 'mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
       ],
     },
   },
@@ -71,5 +75,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  pwa,
 
 })

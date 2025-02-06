@@ -25,7 +25,7 @@ function change(event: Event) {
 
     img.value.src = e.target.result
     croppie.value = new Croppie(img.value, {
-      enableResize: false,
+      enableResize: true,
       showZoomer: false,
       viewport: {
         width: 400,
